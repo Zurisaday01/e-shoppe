@@ -40,3 +40,9 @@ export const applySort = (products: Product[], sortOption: string) => {
 		}
 	});
 };
+
+export const applySearchFilter = (products: Product[], searchTerm: string) => {
+	return products?.filter(product =>
+		product.title.toLowerCase().includes(searchTerm.toLowerCase())
+	);
+}

@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
 import Breadcrumb from '../../breadcrumb';
-import ProductsList from '../../products/products-list';
 import FilterOptions from '../../products/filter-options';
 import {
 	fetchProducts,
@@ -20,11 +19,11 @@ import {
 	applySort,
 	applyFilter,
 	getPaginatedProducts,
+	applySearchFilter,
 } from '../../../lib/utils';
 import SearchBar from '../../search-bar';
-import {
-	selectSearchTerm,
-} from '../../../services/search/slice';
+import { selectSearchTerm } from '../../../services/search/slice';
+import CatalogView from '../../products/catalog-view';
 
 const CatalogPage = () => {
 	const dispatch: AppDispatch = useDispatch();
@@ -44,17 +43,17 @@ const CatalogPage = () => {
 		() => applyFilter(selectedCategories, products || []),
 		[selectedCategories, products]
 	);
+
 	const sortedProducts = useMemo(
 		() => applySort(filteredProducts || [], sortOption),
 		[filteredProducts, sortOption]
 	);
 
 	// Filter the products based on the search term directly in the component
-	const filteredSearchedProducts = useMemo(() => {
-		return sortedProducts?.filter(product =>
-			product.title.toLowerCase().includes(searchTerm.toLowerCase())
-		);
-	}, [sortedProducts, searchTerm]);
+	const filteredSearchedProducts = useMemo(
+		() => applySearchFilter(sortedProducts || [], searchTerm),
+		[sortedProducts, searchTerm]
+	);
 
 	const paginatedProducts = useMemo(
 		() => getPaginatedProducts(filteredSearchedProducts, pagination),
@@ -67,53 +66,32 @@ const CatalogPage = () => {
 		dispatch(fetchProducts());
 	}, [dispatch]);
 
-	// Reset pagination when categories change
 	useEffect(() => {
-		if (selectedCategories.length > 0) {
-			dispatch(
-				resetPagination({
-					currentPage: 1,
-					totalItems: filteredProducts?.length,
-				})
-			);
-		} else {
-			dispatch(
-				resetPagination({
-					currentPage: 1,
-					totalItems: products?.length || 0,
-				})
-			);
-		}
-	}, [
-		dispatch,
-		selectedCategories,
-		filteredProducts?.length,
-		products?.length,
-	]);
+		// Determine total items based on selected categories or search term
+		let totalItems = products?.length || 0;
 
-	useEffect(() => {
-		if (searchTerm) {
-			dispatch(
-				resetPagination({
-					currentPage: 1,
-					totalItems: filteredSearchedProducts?.length,
-				})
-			);
-		} else {
-			dispatch(
-				resetPagination({
-					currentPage: 1,
-					totalItems: products?.length || 0,
-				})
-			);
+		if (selectedCategories.length > 0) {
+			totalItems = filteredProducts?.length || 0;
 		}
+
+		if (searchTerm) {
+			totalItems = filteredSearchedProducts?.length || 0;
+		}
+
+		// Reset pagination only once when categories or search term change
+		dispatch(
+			resetPagination({
+				currentPage: 1,
+				totalItems,
+			})
+		);
 	}, [
 		dispatch,
 		selectedCategories,
-		filteredProducts.length,
-		products?.length,
+		filteredProducts,
 		searchTerm,
-		filteredSearchedProducts?.length,
+		filteredSearchedProducts,
+		products,
 	]);
 
 	// Handlers
@@ -133,14 +111,13 @@ const CatalogPage = () => {
 				/>
 				<div className='flex gap-0 lg:gap-4 mt-4'>
 					<aside>
-						<FilterOptions categories={categories} />
+						<FilterOptions />
 					</aside>
 					<div className='w-full'>
 						<SearchBar />
-						<ProductsList
+						<CatalogView
 							pagination={pagination}
 							products={paginatedProducts as Product[]}
-							categories={categories}
 							onSortChange={handleSortChange}
 						/>
 					</div>

@@ -3,21 +3,19 @@ import { useState } from 'react';
 import { formatStringCamelCase } from '../../lib/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+	selectAllCategories,
 	selectSelectedCategories,
 	setSelected,
 } from '../../services/categories/slice';
 
 const FilterOptions = ({
-	categories,
 	role = 'sidebar',
 }: {
-	categories: string[];
 	role?: 'sidebar' | 'modal';
 }) => {
 	const dispatch = useDispatch();
-
 	const [openItem, setOpenItem] = useState<string | null>(null);
-
+	const categories = useSelector(selectAllCategories);
 	const selectedCategories = useSelector(selectSelectedCategories);
 
 	// handle category selection
@@ -62,7 +60,7 @@ const FilterOptions = ({
 					</button>
 					<div className={`${openItem === 'products' ? 'block' : 'hidden'}`}>
 						<ul className='space-y-2 mt-4 ml-6'>
-							{categories.map((category, index) => (
+							{categories?.map((category, index) => (
 								<li key={index}>
 									<div className='flex items-center mb-4'>
 										<input

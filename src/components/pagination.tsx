@@ -26,9 +26,7 @@ const Pagination = ({ pagination }: PaginationProps) => {
 	};
 
 	return (
-		<nav
-			aria-label='Page navigation'
-			className='flex items-center justify-center'>
+		<nav data-testid='pagination' className='flex items-center justify-center'>
 			<ul className='inline-flex -space-x-px text-base h-10'>
 				<li>
 					<button
