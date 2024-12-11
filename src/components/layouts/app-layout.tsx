@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router';
+import { Outlet } from 'react-router-dom';
 import Header from './header';
 import Loader from '../loader';
 import { Suspense } from 'react';
