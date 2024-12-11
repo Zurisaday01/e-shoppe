@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import Button from '../../../../button';
 
 const HeroSection = () => {
@@ -20,8 +19,8 @@ const HeroSection = () => {
 						what they're looking for.
 					</p>
 					<div className='mt-10 flex items-center justify-center gap-x-6'>
-						<Button>
-							<Link to='/catalog'>View catalog</Link>
+						<Button type='link' to='/catalog'>
+							View catalog
 						</Button>
 					</div>
 				</div>
