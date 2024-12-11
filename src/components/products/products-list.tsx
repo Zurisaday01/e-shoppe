@@ -57,7 +57,9 @@ const ProductsList = memo(
 						/>
 					))}
 				</div>
-				{products.length > 0 && <Pagination pagination={pagination} />}
+				{products.length > 0 && pagination.totalPages > 1 && (
+					<Pagination pagination={pagination} />
+				)}
 			</div>
 		);
 	}

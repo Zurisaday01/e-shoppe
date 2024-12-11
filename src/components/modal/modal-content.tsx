@@ -24,7 +24,7 @@ const ModalContent = ({
 			className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm ${className}`}
 			onClick={closeModal}>
 			<div
-				className={`relative rounded-lg bg-white shadow-md ${
+				className={`relative rounded-lg bg-white dark:bg-gray-900 shadow-md ${
 					width ? width : 'w-[800px] max-w-sm'
 				}`}
 				onClick={e => e.stopPropagation()}>
