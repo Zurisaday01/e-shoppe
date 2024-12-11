@@ -20,7 +20,7 @@ export const fetchProducts = createAsyncThunk<fetchResponse, void>(
 );
 
 // state type
-interface ProductsState {
+export interface ProductsState {
 	products: Product[] | null;
 	status: 'idle' | 'pending' | 'succeeded' | 'failed';
 	error: string | null;

@@ -26,7 +26,7 @@ import { selectSearchTerm } from '../../../services/search/slice';
 import CatalogView from '../../products/catalog-view';
 
 const CatalogPage = () => {
-	const dispatch: AppDispatch = useDispatch();
+	const dispatch = useDispatch<AppDispatch>();
 
 	// Redux state selectors
 	const products = useSelector(selectAllProducts);

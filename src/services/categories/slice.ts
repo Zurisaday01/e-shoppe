@@ -11,7 +11,7 @@ export const fetchCategories = createAsyncThunk<string[], void>(
 );
 
 // state type
-interface CategoriesState {
+export interface CategoriesState {
 	categories: string[] | null;
 	selectedCategories: string[];
 	status: 'idle' | 'pending' | 'succeeded' | 'failed';
